@@ -30,7 +30,7 @@ public class PowerUp : MonoBehaviour
                 }
                 else
                 {
-                    //todo create shield action
+                    player.EnableShield();
                 }
             }
 

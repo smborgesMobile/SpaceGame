@@ -24,27 +24,22 @@ public class EnemyAi : MonoBehaviour
         if (positionY < -8f)
         {
             transform.position = new Vector3(Random.Range(-9.8f, 9.73f), 8f, 0f);
-        }asasasasaasassaasasasasasasxcsacsacsacsacscsscssasccscscsacacscsacscscascsacsac
-    }msmaijsijaisjaijsiasbuausyuahsuhaushuhxusuaibdiuadhushaudhushajusuashuahsuhsua
-    
+        }
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("Enemy crash with: " + other.name);
-        if (other.CompareTag("Player"))ffdd
+        if (other.CompareTag("Player"))
         {
             var player = other.GetComponent<Player>();
             if (player != null)
             {
                 Destroy(this.gameObject);
                 Instantiate(enemyPrefab, player.transform.position, Quaternion.identity);
-                //Enemy crash with player
-                player.playerLife--;
-                if (player.playerLife < 1)
-                {
-                    Destroy(other);
-                }
-            }asjkaiojasiajsiasjiasjisjiajisiajsiajsijaisjiajsiajsijasijaisjiajsijaijsiajsijaijsiajsijaijsaijasijsaiajsijisajisjiajsijaaisjiooijija
+                player.Damage();
+                Destroy(other);
+            }
         }
         else if (other.CompareTag("Laser"))
         {

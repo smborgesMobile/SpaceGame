@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
     // This instance of player explosion.
     [SerializeField] private GameObject playerExplosion;
 
+    [SerializeField] private GameObject shieldGameObject;
+
     //CooldownND$wn system 
     [SerializeField] private float fireRate = 0.25f;
     private float _canFire;
@@ -22,6 +24,8 @@ public class Player : MonoBehaviour
     // Holds the if speed boost can be applied.
     public bool canBoostSpeed;
 
+    public bool shieldsActivity = false;
+
     // Holds the instance of player life;
     public int playerLife = 100;
 
@@ -30,7 +34,6 @@ public class Player : MonoBehaviour
     {
         // Movement player
         Movement();
-        ExplodePlayer();
 
         if (!Input.GetMouseButtonDown(0) && !Input.GetKeyDown(KeyCode.Space)) return;
 
@@ -48,8 +51,18 @@ public class Player : MonoBehaviour
      * Run the animation to explode player then destroy
      * this current object.
      */
-    private void ExplodePlayer()
+    public void Damage()
     {
+        if (shieldsActivity)
+        {
+            shieldsActivity = false;
+            shieldGameObject.SetActive(false);
+            // Cancel the method execution.
+            return;
+        }
+
+        playerLife--;
+
         if (playerLife < 1)
         {
             Vector3 playerPosition = transform.position;
@@ -137,6 +150,13 @@ public class Player : MonoBehaviour
                 Quaternion.identity);
             _canFire = Time.time + fireRate;
         }
+    }
+
+    public void EnableShield()
+    {
+        //Put the shield on the player.
+        shieldGameObject.SetActive(true);
+        shieldsActivity = true;
     }
 
     /**
