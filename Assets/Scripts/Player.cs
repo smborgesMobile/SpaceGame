@@ -19,15 +19,35 @@ public class Player : MonoBehaviour
     private float _canFire;
 
     // Start is called before the first frame update
-    public bool canTripleShot;
+    private bool _canTripleShot;
 
     // Holds the if speed boost can be applied.
-    public bool canBoostSpeed;
+    private bool _canBoostSpeed;
 
-    public bool shieldsActivity = false;
+    public bool shieldsActivity;
 
     // Holds the instance of player life;
-    public int playerLife = 100;
+    private int _playerLife = 3;
+
+    private UIManager _uiManager;
+
+    private GameManager _gameManager;
+    private SpawnManager _spawnManager;
+
+    private void Start()
+    {
+        // Retrieves the UI manager
+        _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+
+        if (_spawnManager != null)
+        {
+            _spawnManager.StartSpawnRoutines();
+        }
+
+        _uiManager?.UpdateLives(_playerLife);
+    }
 
     // Update is called once per frame
     private void Update()
@@ -35,15 +55,16 @@ public class Player : MonoBehaviour
         // Movement player
         Movement();
 
-        if (!Input.GetMouseButtonDown(0) && !Input.GetKeyDown(KeyCode.Space)) return;
-
-        if (canTripleShot)
+        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
         {
-            TripleShoot();
-        }
-        else
-        {
-            Shoot();
+            if (_canTripleShot)
+            {
+                TripleShoot();
+            }
+            else
+            {
+                Shoot();
+            }
         }
     }
 
@@ -61,13 +82,16 @@ public class Player : MonoBehaviour
             return;
         }
 
-        playerLife--;
+        _playerLife--;
+        _uiManager.UpdateLives(_playerLife);
 
-        if (playerLife < 1)
+        if (_playerLife < 1)
         {
             Vector3 playerPosition = transform.position;
             Instantiate(playerExplosion, playerPosition, Quaternion.identity);
-            Destroy(this.gameObject);
+            _gameManager.gameOver = true;
+            _gameManager.ShowTitleScreen();
+            Destroy(gameObject);
         }
     }
 
@@ -80,7 +104,7 @@ public class Player : MonoBehaviour
         var horizontalInput = Input.GetAxis("Horizontal");
         var verticalInput = Input.GetAxis("Vertical");
 
-        if (canBoostSpeed)
+        if (_canBoostSpeed)
         {
             // Moving left to right
             localTransform.Translate(horizontalInput * Time.deltaTime * speed * 1.5f * Vector3.right);
@@ -162,40 +186,41 @@ public class Player : MonoBehaviour
     /**
      * Enabled boost of speed.
      */
-    public void BoostSpeedPowerUpOn(int id)
+    public void BoostSpeedPowerUpOn()
     {
-        canBoostSpeed = true;
-        StartCoroutine(PowerDownRoutine(id));
+        _canBoostSpeed = true;
+        StartCoroutine(PowerUpSpeedShotRoutine());
     }
 
     /**
      * Enable triple shoot.
      */
-    public void TripleShotPowerUpOn(int id)
+    public void TripleShotPowerUpOn()
     {
-        canTripleShot = true;
-        StartCoroutine(PowerDownRoutine(id));
+        _canTripleShot = true;
+        StartCoroutine(PowerUpTripleShotRoutine());
     }
 
     /**
      * Create coroutine to wait 5 seconds then disable the
      * super power.
      */
-    private IEnumerator PowerDownRoutine(int id)
+    private IEnumerator PowerUpTripleShotRoutine()
     {
         // Wait for five seconds
         yield return new WaitForSeconds(5.0f);
-        switch (id)
-        {
-            case 0:
-                canTripleShot = false;
-                break;
-            case 1:
-                canBoostSpeed = false;
-                break;
-            case 3:
-                //todo implement shield
-                break;
-        }
+        _canTripleShot = false;
+    }
+
+
+    /**
+ * Create coroutine to wait 5 seconds then disable the
+ * super power.
+ */
+    private IEnumerator PowerUpSpeedShotRoutine()
+    {
+        // Wait for five seconds
+        yield return new WaitForSeconds(5.0f);
+        _canBoostSpeed = false;
     }
 }

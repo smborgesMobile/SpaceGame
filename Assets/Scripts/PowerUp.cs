@@ -9,26 +9,32 @@ public class PowerUp : MonoBehaviour
     void Update()
     {
         transform.Translate(speed * Time.deltaTime * Vector3.down);
+
+        if (transform.position.y < -8)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Collider with: " + other.name);
-        if (other.name == "Player")
+        Debug.Log("Player Collision: " + other.tag);
+        if (other.CompareTag("Player"))
         {
             var player = other.GetComponent<Player>();
             if (player != null)
             {
-                player.canTripleShot = true;
                 if (powerupid == 0)
                 {
-                    player.TripleShotPowerUpOn(powerupid);
+                    player.TripleShotPowerUpOn();
                 }
-                else if (powerupid == 1)
+
+                if (powerupid == 1)
                 {
-                    player.BoostSpeedPowerUpOn(powerupid);
+                    player.BoostSpeedPowerUpOn();
                 }
-                else
+
+                if (powerupid == 2)
                 {
                     player.EnableShield();
                 }

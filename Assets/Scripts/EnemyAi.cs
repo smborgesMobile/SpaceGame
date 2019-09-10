@@ -1,12 +1,19 @@
 ﻿using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class EnemyAi : MonoBehaviour
 {
     private float _speed = 5.0f;
+    private UIManager _uiManager;
 
     // The instance of lase prefab
     [SerializeField] private GameObject enemyPrefab;
+
+
+    private void Start()
+    {
+        // Retrieves the UI manager
+        _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+    }
 
     // Update is called once per frame
     void Update()
@@ -23,29 +30,32 @@ public class EnemyAi : MonoBehaviour
 
         if (positionY < -8f)
         {
-            transform.position = new Vector3(Random.Range(-9.8f, 9.73f), 8f, 0f);
+            Destroy(gameObject);
         }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Enemy crash with: " + other.name);
         if (other.CompareTag("Player"))
         {
             var player = other.GetComponent<Player>();
             if (player != null)
             {
-                Destroy(this.gameObject);
                 Instantiate(enemyPrefab, player.transform.position, Quaternion.identity);
                 player.Damage();
-                Destroy(other);
+                Destroy(gameObject);
             }
         }
         else if (other.CompareTag("Laser"))
         {
+            if (_uiManager != null)
+            {
+                _uiManager.UpdateScore();
+            }
+
             Instantiate(enemyPrefab, other.GetComponent<Laser>().transform.position, Quaternion.identity);
             Destroy(other);
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
     }
 }
