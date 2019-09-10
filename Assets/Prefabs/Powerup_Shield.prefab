@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3457399097074379889}
   - component: {fileID: 6089104864869043737}
   - component: {fileID: 10120512160349340}
+  - component: {fileID: 3383229499347304999}
   m_Layer: 0
   m_Name: Powerup_Shield
   m_TagString: Untagged
@@ -112,3 +113,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3
   powerupid: 2
+  audioClip: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
+--- !u!95 &3383229499347304999
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8748824511515129808}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 822803a96a1da4a4487bff239737a6cb, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

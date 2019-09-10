@@ -34,12 +34,20 @@ public class Player : MonoBehaviour
     private GameManager _gameManager;
     private SpawnManager _spawnManager;
 
+    private AudioSource _audioSource;
+
+    private int _hitCount;
+
+    [SerializeField] private GameObject[] _engines;
+
     private void Start()
     {
         // Retrieves the UI manager
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+        _audioSource = GetComponent<AudioSource>();
+        _hitCount = 0;
 
         if (_spawnManager != null)
         {
@@ -55,16 +63,14 @@ public class Player : MonoBehaviour
         // Movement player
         Movement();
 
-        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
+        if (!Input.GetMouseButtonDown(0) && !Input.GetKeyDown(KeyCode.Space)) return;
+        if (_canTripleShot)
         {
-            if (_canTripleShot)
-            {
-                TripleShoot();
-            }
-            else
-            {
-                Shoot();
-            }
+            TripleShoot();
+        }
+        else
+        {
+            Shoot();
         }
     }
 
@@ -80,6 +86,19 @@ public class Player : MonoBehaviour
             shieldGameObject.SetActive(false);
             // Cancel the method execution.
             return;
+        }
+        else
+        {
+            _hitCount++;
+
+            if (_hitCount == 1)
+            {
+                _engines[0].SetActive(true);
+            }
+            else if (_hitCount == 2)
+            {
+                _engines[1].SetActive(true);
+            }
         }
 
         _playerLife--;
@@ -152,6 +171,7 @@ public class Player : MonoBehaviour
     {
         if (Time.time > _canFire)
         {
+            _audioSource.Play();
             Instantiate(laserPrefab, transform.position + new Vector3(0, 0.9f, 0),
                 Quaternion.identity);
             _canFire = Time.time + fireRate;
@@ -165,6 +185,7 @@ public class Player : MonoBehaviour
     {
         if (Time.time > _canFire)
         {
+            _audioSource.Play();
             var position = transform.position;
             Instantiate(laserPrefab, position + new Vector3(-0.54f, -0.002f, 0f),
                 Quaternion.identity);

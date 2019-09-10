@@ -4,6 +4,7 @@ public class EnemyAi : MonoBehaviour
 {
     private float _speed = 5.0f;
     private UIManager _uiManager;
+    [SerializeField] private AudioClip _audioClip;
 
     // The instance of lase prefab
     [SerializeField] private GameObject enemyPrefab;
@@ -43,6 +44,7 @@ public class EnemyAi : MonoBehaviour
             {
                 Instantiate(enemyPrefab, player.transform.position, Quaternion.identity);
                 player.Damage();
+                AudioSource.PlayClipAtPoint(_audioClip, Camera.main.transform.position);
                 Destroy(gameObject);
             }
         }
@@ -55,6 +57,7 @@ public class EnemyAi : MonoBehaviour
 
             Instantiate(enemyPrefab, other.GetComponent<Laser>().transform.position, Quaternion.identity);
             Destroy(other);
+            AudioSource.PlayClipAtPoint(_audioClip, Camera.main.transform.position);
             Destroy(gameObject);
         }
     }

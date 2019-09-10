@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 2608686437754336516}
   - component: {fileID: 2608686437754336519}
   - component: {fileID: 2608686437754336514}
+  - component: {fileID: 6888374832632047103}
   m_Layer: 0
-  m_Name: Powerup_triple_shoot
+  m_Name: Powerup_Triple_Shoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -94,8 +95,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a84bb54c7c6c049a0beebbec32294454, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 3
-  powerupID: 0
+  speed: 3
+  powerupid: 0
+  audioClip: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
 --- !u!61 &2608686437754336514
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -122,3 +124,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 4.1204834, y: 5.12}
   m_EdgeRadius: 0
+--- !u!95 &6888374832632047103
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2608686437754336518}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 334f919c283cd4f0bb697723a9f040a3, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

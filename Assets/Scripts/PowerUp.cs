@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class PowerUp : MonoBehaviour
 {
     [SerializeField] private float speed = 3.0f;
     [SerializeField] private int powerupid; //0 =  triple shot, 1 = Speed boost, 2 = Shield
+    [SerializeField] private AudioClip audioClip;
 
     // Update is called once per frame
     void Update()
@@ -24,6 +26,8 @@ public class PowerUp : MonoBehaviour
             var player = other.GetComponent<Player>();
             if (player != null)
             {
+                AudioSource.PlayClipAtPoint(audioClip, Camera.main.transform.position);
+
                 if (powerupid == 0)
                 {
                     player.TripleShotPowerUpOn();
